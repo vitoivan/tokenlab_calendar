@@ -1,0 +1,38 @@
+services:
+  db:
+    image: postgres:17.2
+    container_name: tokenlab_db
+    environment:
+      POSTGRES_USER: tokenlab
+      POSTGRES_PASSWORD: tokenlab
+      POSTGRES_DB: tokenlab
+    ports:
+        - 5432:5432
+    healthcheck:
+        test: ["CMD-SHELL", "pg_isready", "-d", "tokenlab"]
+        interval: 15s
+        timeout: 60s
+        retries: 5
+        start_period: 80s  
+  api:
+    build: 
+      context: ./tokenlab_calendar_api/
+      args:
+        PORT: 3000
+    container_name: tokenlab_api
+    environment:
+        DATABASE_URL: postgresql://tokenlab:tokenlab@db:5432/tokenlab
+        PORT: 3000
+    ports:
+      - 3000:3000
+    healthcheck:
+        test: ["CMD-SHELL", "curl", "http://localhost:3000/healthcheck"]
+    depends_on:
+      - db
+  front:
+    build: ./tokenlab_calendar_frontend/
+    container_name: tokenlab_front
+    ports:
+      - 8000:80
+    depends_on:
+      - api

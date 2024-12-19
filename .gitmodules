@@ -1,0 +1,6 @@
+[submodule "tokenlab_calendar_api"]
+	path = tokenlab_calendar_api
+	url = git@github.com:vitoivan/tokenlab_calendar_api.git
+[submodule "tokenlab_calendar_frontend"]
+	path = tokenlab_calendar_frontend
+	url = git@github.com:vitoivan/tokenlab_calendar_frontend.git
